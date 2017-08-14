@@ -22,7 +22,7 @@ function loadGame()
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 	$("body").append(canvas);
-	playButton = new component(200, 50, "http://www.matim-dev.com/uploads/1/5/8/0/15804842/6920066_orig.png", centerWidth(200), centerHeight(50), "image");
+	playButton = new component(200, 50, "img/play.png", centerWidth(200), centerHeight(50), "image");
 }
 
 function clickedOnComponent(component, x, y)
@@ -38,6 +38,10 @@ function clickedOnComponent(component, x, y)
 $(document).ready(function()
 {
 	loadGame();
+	playButton.image.onload = function()
+	{
+		context.drawImage(playButton.image, playButton.x, playButton.y, playButton.width, playButton.height);
+	};
 	
 	canvas.addEventListener('click', function(event) {
 		var x = event.pageX - canvas.offsetLeft;
@@ -45,21 +49,20 @@ $(document).ready(function()
 		if(clickedOnComponent(playButton, x, y))
 		{
 			alert("Start game.");
+			
 		}
-
-		//alert("X: " + x + "\nY: " + y);
-
+		
 	}, false);
 });
 
 function component(width, height, color, x, y, type) 
 {
 	this.type = type;
-	if (type == "image")
+	/*if (type == "image")
 	{
 		this.image = new Image();
 		this.image.src = color;
-	}
+	}*/
 	
     this.width = width;
     this.height = height;
@@ -67,7 +70,8 @@ function component(width, height, color, x, y, type)
     this.y = y;
 	if (type == "image") 
 	{
-		context.drawImage(this.image, this.x, this.y, this.width, this.height);
+		this.image = new Image();
+		this.image.src = color;
 	} 
 
 	else 
