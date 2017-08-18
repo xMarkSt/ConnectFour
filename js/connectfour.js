@@ -22,10 +22,10 @@ function loadGame()
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 	$("body").append(canvas);
-	playButton = new component(200, 50, "img/play.png", centerWidth(200), centerHeight(50), "image");
+	playButton = new component(200, 50, "img/play.png", centerWidth(200), centerHeight(50), "image", "pointer");
 }
 
-function clickedOnComponent(component, x, y)
+function IsOnComponent(component, x, y)
 {
 	if (y > component.y && y < component.y + component.height 
 	&& x > component.x && x < component.x + component.width) 
@@ -42,28 +42,36 @@ $(document).ready(function()
 	{
 		context.drawImage(playButton.image, playButton.x, playButton.y, playButton.width, playButton.height);
 	};
-	
-	canvas.addEventListener('click', function(event) {
-		var x = event.pageX - canvas.offsetLeft;
+		
+	$( "canvas" ).click(function(event) {
+ 	 var x = event.pageX - canvas.offsetLeft;
 		var y = event.pageY - canvas.offsetTop;
-		if(clickedOnComponent(playButton, x, y))
+		if(IsOnComponent(playButton, x, y))
 		{
-			alert("Start game.");
-			
+			alert("Start game.");			
+		}
+	});
+	
+	$( "canvas" ).mousemove(function(event) {
+	 	var x = event.pageX - canvas.offsetLeft;
+		var y = event.pageY - canvas.offsetTop;
+		if(IsOnComponent(playButton, x, y))
+		{
+			$('canvas').css('cursor', playButton.cursor);		
 		}
 		
-	}, false);
+		else
+		{
+			$('canvas').css('cursor', 'default');		
+		}
+	});
 });
 
-function component(width, height, color, x, y, type) 
+
+function component(width, height, color, x, y, type, cursor) 
 {
 	this.type = type;
-	/*if (type == "image")
-	{
-		this.image = new Image();
-		this.image.src = color;
-	}*/
-	
+	this.cursor = cursor;
     this.width = width;
     this.height = height;
     this.x = x;
