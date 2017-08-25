@@ -7,3 +7,25 @@ canvas
     margin-right: auto;
     display: block;
 }
+
+#party
+{
+	margin: 0;
+    position: absolute;
+    top: 60%;
+    margin-left: -.5em;
+    margin-top: -.5em;*/
+}
+
+#party input
+{
+	width: 210px;
+	display: none;
+	position: relative;
+}
+
+h1
+{
+	text-align: center;
+	margin: 0;
+}

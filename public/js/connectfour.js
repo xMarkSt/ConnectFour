@@ -3,9 +3,7 @@ $(document).ready(function()
 	var socket = io();	
 	var canvas;
 	var context;
-	var playButton;
 	var components = [];
-
 	loadGame();
 	
 	//Draw images onload
@@ -52,7 +50,7 @@ $(document).ready(function()
 
 		canvas.width = canvasWidth;
 		canvas.height = canvasHeight;
-		$("body").append(canvas);
+		$("#game").append(canvas);
 		addComponent("playButton", 200, 50, "img/play.png", centerWidth(200), centerHeight(50), "image", "pointer");
 	}
 	
@@ -118,7 +116,32 @@ $(document).ready(function()
 		return null;
 			
 	}
-
+	
+	socket.on("party create", function(code)
+	{
+		console.log(code);
+		
+		//Share this link with your friends:
+		var titleFont = 0.05 * canvas.width;
+		var titleHeight = canvas.height / 2;
+		context.font = titleFont + "px Arial";
+		context.textAlign = "center";
+		context.fillText("Share this link with your friends:", canvas.width / 2, titleHeight);
+		
+		//Link with code
+		var link = window.location.href + "#" + code;
+		//context.font = 0.03 * canvas.width + "px Arial";
+		//context.textAlign = "center";
+		//context.fillText(link, canvas.width / 2, titleHeight + titleFont);
+		//var inputWidth = document.getElementById("party").getElementsByTagName("input")[0].offsetWidth;
+		var inputWidth = $("#party input").outerWidth();
+		var bodyWidth = $("body").outerWidth();
+		
+		$("#party input").val(link);
+		$("#party input").css("display", "block");
+		$("#party input").css("left", bodyWidth / 2 - inputWidth / 2 + "px");
+	});
+	
 	$( "canvas" ).click(function(event) 
 	{
 		var x = event.pageX - canvas.offsetLeft;
@@ -129,6 +152,7 @@ $(document).ready(function()
 			if(getCurrentComponent(x,y).name == "playButton")
 			{
 				clearCanvas();
+				socket.emit("party create");
 			}
 		}
 	});
